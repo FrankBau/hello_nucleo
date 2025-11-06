@@ -29,33 +29,37 @@ COMMANDS: Run '[COMMAND] --help' to get more details
 After the project is configured, it can be (re-)build from the command line:
 hello_nucleo> c:\Users\frank\.vscode\extensions\stmicroelectronics.stm32cube-ide-core-1.0.3\resources\binaries\win32\x86_64\cube.exe ninja -C .\build\Debug\
 
-# Command line Builds
+# Command Line Builds
 
 ## Install External Tools
 
 No external tools are needed if you build in VS Code, 
 but neccessary if you build manually from cmd line.
 
-### cmake
+### Install cmake
 
 https://cmake.org/download/
 cmake-4.2.0-rc2-windows-x86_64.msi
 
-### arm gcc toolchain
+### Install arm gcc toolchain
 
 https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 arm-gnu-toolchain-14.3.rel1-mingw-w64-i686-arm-none-eabi.exe
 
 (C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\14.3 rel1)
 
-### make
+### Install make
 
 from cmd line: `winget install ezwinports.make`
 
-## Run make
+Closing and re-opening vs code rsp. cmd is neccessary 
+to find the newly installed tools on the path.
+
+
+## Build Using make
 
 from project folder cmd line: `make`
 
 hint: make uses `Makefile` which is easy to understand and modify
 
-Command line builds cannot debug using the target hardware
+Command line tools cannot debug on the target hardware.

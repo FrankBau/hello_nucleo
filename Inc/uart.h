@@ -12,10 +12,11 @@
 // USB VCP virtual com port connection
 // PA2    ------> USART2_TX     pin alternate function: AF7 (see data sheet)
 // PA15   ------> USART2_RX     pin alternate function: AF3 (see data sheet)
+
+// USART2 initialization at 115200 baud 8N1
 static inline void uart_init(void) {
 
     // setup UART pins:
-
     RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN; // enable clock for peripheral component 
     (void)RCC->AHB2ENR; // ensure that the last write command finished and the clock is on
 
@@ -34,12 +35,30 @@ static inline void uart_init(void) {
     USART2->CR1 = USART_CR1_UE | USART_CR1_RE | USART_CR1_TE;   // enable UART, RX, TX 
 }
 
+// blocking version of putc: waits until character can be sent
 static inline void uart_putc(char c) {
     GPIOB->ODR ^= GPIO_ODR_OD3; // toggle user LED
     while (!(USART2->ISR & USART_ISR_TXE)) {
     } // wait until transmit data register is empty
     GPIOB->ODR ^= GPIO_ODR_OD3; // toggle user LED
     USART2->TDR = c;                        // write character to data register
+}
+
+// blocking version of puts: waits until all characters can be sent
+static inline void uart_puts(const char *s) {
+    while (*s) {
+        uart_putc(*s++);
+    }
+}
+
+// non-blocking version of getc: returns -1 if no character is available
+static inline int uart_getc(void) {
+    USART2->ICR = USART_ICR_ORECF;      // clear overrun error flag (set when chars were missed)
+    if(USART2->ISR & USART_ISR_RXNE) {  // RXNE flag set?
+        char ch = (char)USART2->RDR;    // reading RDR automagically clears the RXNE flag
+        return ch;
+    }
+    return -1; // no character received
 }
 
 #endif

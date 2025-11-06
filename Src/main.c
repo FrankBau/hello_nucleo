@@ -31,9 +31,18 @@ int main(void)
 	for(;;)
     {
         gpio_set_hi(GPIOB, 3);
-        delay(100);
+        delay_ms(100);
         gpio_set_lo(GPIOB, 3);
-        delay(100);
-        uart_putc('x');
+        delay_ms(300);
+        uart_puts("enter 1 to switch LED on or 0 to switch LED off\n");
+        int c = uart_getc();
+        if(c=='1') {
+            gpio_set_hi(GPIOB, 3);
+            delay_ms(2000);
+        }
+        else if(c=='0') {
+            gpio_set_lo(GPIOB, 3);
+            delay_ms(2000);
+        }
     }
 }
