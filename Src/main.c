@@ -12,7 +12,7 @@ int main(void)
     gpio_pull(GPIOB, 0, PULL_UP);
     
     gpio_write(GPIOB, 3, 1);
-    delay_ms(1000);
+    delay_ms(1000); // LED self-test
     gpio_write(GPIOB, 3, 0);
 
     uart_init();

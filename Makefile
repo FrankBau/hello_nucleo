@@ -5,9 +5,9 @@ PROJECT=hello_nucleo
 
 SRC=Src/main.c Src/startup_stm32l432xx.S Src/syscall.c Src/sysmem.c
 
-CPU_FLAGS=-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mlittle-endian -mthumb
+CPU_FLAGS=-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 
-CFLAGS=-DDEBUG -I./Inc -O0 -g3 -ggdb ${CPU_FLAGS} -Wall -Wextra -Wpedantic -Wno-unused-parameter
+CFLAGS=-DDEBUG -I./Inc ${CPU_FLAGS} -Wall -Wextra -Wpedantic -Wno-unused-parameter
 
 ${PROJECT}.bin: ${PROJECT}.elf
 	arm-none-eabi-objcopy -O binary $^ $@
