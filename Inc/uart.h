@@ -31,20 +31,18 @@ static inline void uart_init(void) {
     RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;   // enable clock for peripheral component 
     (void)RCC->APB1ENR1; // ensure that the last instruction finished and the clock is now on
 
-    USART2->BRR = 4000000 / 115200; // set baud rate = 115200 baud for SYSCLK = 4 MHz
+    USART2->BRR = 4000000 / 115200; // set baud rate = 115200 baud, assuming SYSCLK = 4 MHz
     USART2->CR1 = USART_CR1_UE | USART_CR1_RE | USART_CR1_TE;   // enable UART, RX, TX 
 }
 
-// blocking version of putc: waits until character can be sent
+// blocking version of putc: waits until character is sent
 static inline void uart_putc(char c) {
-    GPIOB->ODR ^= GPIO_ODR_OD3; // toggle user LED
     while (!(USART2->ISR & USART_ISR_TXE)) {
     } // wait until transmit data register is empty
-    GPIOB->ODR ^= GPIO_ODR_OD3; // toggle user LED
-    USART2->TDR = c;                        // write character to data register
+    USART2->TDR = c; // write character to data register
 }
 
-// blocking version of puts: waits until all characters can be sent
+// blocking version of puts: waits until all characters are sent
 static inline void uart_puts(const char *s) {
     while (*s) {
         uart_putc(*s++);
