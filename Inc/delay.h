@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 // microsecond delay, based on cortex-m4 instruction timing, assume default 4 MHz SYSCLK
-void delay_us(uint32_t us) {
+static inline void delay_us(uint32_t us) {
     __asm volatile (
         "mov r0, %[count]\n"    // Load the delay count into register r0
         "1:\n"                  // Loop label
@@ -18,7 +18,7 @@ void delay_us(uint32_t us) {
 }
 
 // millisecond delay
-void delay_ms(uint32_t ms)
+static inline void delay_ms(uint32_t ms)
 {
     for(uint32_t i=0; i<ms; ++i)
     {
