@@ -8,9 +8,11 @@ static inline void delay_us(uint32_t us) {
     __asm volatile (
         "mov r0, %[count]\n"    // Load the delay count into register r0
         "1:\n"                  // Loop label
-        "subs r0, r0, #1\n"     // Subtract 1 from r0   (1 CPU cycle)
-        "nop\n"                 // No operation needed to make the loop body take 4 cycles = 1 µs
-        "bne 1b\n"              // Branch to loop label if r0 is not zero (2 CPU cycles, measured)
+        "sub  r0, r0, #1\n"     // Subtract 1 from r0   (1 CPU cycle)
+#if (__CORTEX_M != 0)
+        "nop\n"                 // nop = 1 CPU cycle
+#endif
+        "bne 1b\n"              // Branch to loop label if r0 is not zero (2 CPU cycles, except for Cortex-M0)
         :
         : [count] "r" (us)      // Input: delay_count is the number of iterations
         : "r0"                  // Clobbered register
