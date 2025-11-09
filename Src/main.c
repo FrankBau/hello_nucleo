@@ -1,5 +1,3 @@
-#include <stm32l432xx.h>
-
 #include "gpio.h"
 #include "uart.h"
 #include "delay.h"
@@ -7,10 +5,9 @@
 int main(void)
 {
 
-    gpio_mode(GPIOB, 3, OUTPUT);
-    gpio_mode(GPIOB, 0, INPUT);
-    gpio_pull(GPIOB, 0, PULL_UP);
-    
+    gpio_setup(GPIOB, 3, OUTPUT);
+    gpio_setup(GPIOB, 0, INPUT_PULLUP);
+
     gpio_write(GPIOB, 3, 1);
     delay_ms(1000); // LED self-test
     gpio_write(GPIOB, 3, 0);
