@@ -2,7 +2,6 @@
 #define __GPIO_H
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <stm32l432xx.h>
 
 // pin mode
